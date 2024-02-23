@@ -23,7 +23,6 @@ def create_vector_pair(nonZero_size=2000, mean=0, std=1, random_seed=9):
     np.random.seed(random_seed)
 
     loc, scale = mean-std, std*2
-    
     # Generate non-zero elements for vectors A and B from a uniform distribution [loc, loc+scale] or [-1,1]
     vecA_nonZero = stats.uniform.rvs(loc=loc, scale=scale, size=nonZero_size)
     vecB_nonZero = stats.uniform.rvs(loc=loc, scale=scale, size=nonZero_size)
@@ -39,14 +38,8 @@ def create_vector_pair(nonZero_size=2000, mean=0, std=1, random_seed=9):
 def create_vector_pair_with_outlier(nonZero_size=2000, mean=0, std=1, random_seed=9, 
                                     mean_outlier=25, std_outlier=5, outlier_fraction=0.01):
     vecA_nonZero, vecB_nonZero = create_vector_pair(nonZero_size, mean, std, random_seed)
-    
-    low, upp = mean_outlier-std_outlier, mean_outlier+std_outlier
-    X2 = stats.truncnorm((low-mean_outlier)/std_outlier, (upp-mean_outlier)/std_outlier, loc=mean_outlier, scale=std_outlier)
     outlier_size = round(nonZero_size*outlier_fraction)
-    vecA_outlier = X2.rvs(outlier_size)
-    vecB_outlier = X2.rvs(outlier_size)
-    vecA_outlier = np.array([round(i) for i in vecA_outlier])
-    vecB_outlier = np.array([round(i) for i in vecB_outlier])
+    vecA_outlier, vecB_outlier = create_vector_pair(outlier_size, mean_outlier, std_outlier, random_seed)
     outlier_index = np.random.choice(nonZero_size, size=outlier_size, replace=False)
     np.put(vecA_nonZero, outlier_index, vecA_outlier)
     np.put(vecB_nonZero, outlier_index, vecB_outlier)
@@ -80,9 +73,9 @@ def create_correlated_dataset(initial_dataset, new_dataset, r, nrows):
     return df_corr
 
 
-def get_vecAvecB(overlap_ratio, outlier_fraction, mode, corr_r, nonZero_size=2000):
+def get_vecAvecB(overlap_ratio, outlier_fraction, mode, corr_r, mean_outlier=5, std_outlier=1, nonZero_size=2000, random_seed=9):
     sparse_vec_size = nonZero_size*5
-    vecA_nonZero, vecB_nonZero = create_vector_pair_with_outlier(nonZero_size=nonZero_size, mean_outlier=5, std_outlier=1, outlier_fraction=outlier_fraction)
+    vecA_nonZero, vecB_nonZero = create_vector_pair_with_outlier(nonZero_size=nonZero_size, random_seed=random_seed, mean_outlier=mean_outlier, std_outlier=std_outlier, outlier_fraction=outlier_fraction)
     if mode == 'corr':
         print(f"correlation before: {pearsonr(vecA_nonZero, vecB_nonZero)}")
         vecC = create_correlated_dataset(vecA_nonZero, vecB_nonZero, corr_r, vecA_nonZero.shape[0])

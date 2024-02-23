@@ -1,6 +1,5 @@
 import numpy as np
-from src import JL, CS, KMV, MH, WMH, TS, PS, TSCorr, PSCorr, DartMH
-from src import TS012Corr, PS012Corr
+from src import JL, CS, KMV, MH, WMH, TS, PS, TSCorr, PSCorr
 
 def true_values(vecA, vecB):
     iA = np.array([1 if i!=0 else 0 for i in vecA])
@@ -72,9 +71,9 @@ def compute_sample_size(t, mode, storage_size):
     return wmh_sample_size,kmv_sample_size,mh_sample_size,jl_sample_size,cs_sample_size,priority_sample_size,threshold_sample_size
 
 
-def get_sketcher(wmh_sample_size, kmv_sample_size, mh_sample_size, jl_sample_size, cs_sample_size, priority_sample_size, threshold_sample_size, sketch_method, i_seed):
+def get_sketcher(wmh_sample_size, kmv_sample_size, mh_sample_size, jl_sample_size, cs_sample_size, priority_sample_size, threshold_sample_size, sketch_method, t, i_seed):
     if sketch_method == 'jl': sketcher = JL(jl_sample_size, i_seed)
-    elif sketch_method == 'cs': sketcher = CS(cs_sample_size, i_seed)
+    elif sketch_method == 'cs': sketcher = CS(cs_sample_size, i_seed, t=t)
     elif sketch_method == 'kmv': sketcher = KMV(kmv_sample_size, i_seed)
     elif sketch_method == 'mh': sketcher = MH(mh_sample_size, i_seed)
     elif sketch_method == 'wmh': sketcher = WMH(wmh_sample_size, i_seed)
@@ -83,19 +82,16 @@ def get_sketcher(wmh_sample_size, kmv_sample_size, mh_sample_size, jl_sample_siz
     elif sketch_method == 'ps_1norm': sketcher = PS(priority_sample_size, i_seed, norm=1)
     elif sketch_method == 'ps_uniform': sketcher = PS(priority_sample_size, i_seed, norm=0)
     elif sketch_method == 'ts_2norm': sketcher = TS(threshold_sample_size, i_seed, norm=2)
-    elif sketch_method == 'ts_1norm': sketcher = TS(priority_sample_size, i_seed, norm=1)
-    elif sketch_method == 'ts_uniform': sketcher = TS(priority_sample_size, i_seed, norm=0)
+    elif sketch_method == 'ts_1norm': sketcher = TS(threshold_sample_size, i_seed, norm=1)
+    elif sketch_method == 'ts_uniform': sketcher = TS(threshold_sample_size, i_seed, norm=0)
     elif sketch_method == 'ts_corr': sketcher = TSCorr(threshold_sample_size, i_seed)
     elif sketch_method == 'ps_corr': sketcher = PSCorr(priority_sample_size, i_seed)
-    elif sketch_method == 'ts_corr012': sketcher = TS012Corr(threshold_sample_size, i_seed)
-    elif sketch_method == 'ps_corr012': sketcher = PS012Corr(priority_sample_size, i_seed)
     return sketcher
 
 
 plot_parameters = {
     'jl': ('JL', 's', '#dc267f', 'dashed', 1.0, 1.0, 1.0),
     'cs': ('CS', 's', '#dc267f', 'solid', 1.0, 1.0, 1.0),
-    'kmv': ('KMV-NumPy', 's', '#785ef0', 'dotted', 1.0, 1.0, 1.0),
     'mh': ('MH', 's', '#fe6100', 'dashed', 1.0, 1.0, 1.0),
     'wmh': ('MH-weighted', 's', '#fe6100', 'solid', 1.0, 1.0, 1.0),
     'dmh': ('DartMH', '*', '#fe6100', 'solid', 1.0, 1.0, 1.0),
@@ -107,6 +103,4 @@ plot_parameters = {
     'ps_uniform': ('PS-uniform', 's', '#785ef0', 'dashed', 1.0, 1.0, 1.0),
     'ts_corr': ('TS-weighted', 's', '#ffb000', 'solid', 1.0, 1.0, 1.0),
     'ps_corr': ('PS-weighted', 's', '#785ef0', 'solid', 1.0, 1.0, 1.0),
-    'ts_corr012': ('TS-l0l1l2', 's', '#ffb000', 'dashed', 1.0, 1.0, 1.0),
-    'ps_corr012': ('PS-l0l1l2', 's', '#785ef0', 'dashed', 1.0, 1.0, 1.0),
 }
