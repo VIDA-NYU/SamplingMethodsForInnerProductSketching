@@ -38,31 +38,31 @@ class TSSketch(InnerProdSketch):
                 i += 1
             else:
                 j += 1
-        # return ip_est
-        return (ip_est, cnt)
+        return ip_est
     
-    def inner_product(self, other: 'TSSketch') -> float:
-        return self.inner_product_numba(self.sk_indices, self.sk_values, self.norm, self.threshold, self.vector_norm, other.sk_indices, other.sk_values, other.norm, other.threshold, other.vector_norm)
-        
-        # ip_est = 0
-        # cnt = 0
-        # for iia, ia in enumerate(self.sk_indices):
-        #     if ia in other.sk_indices:
-        #         iib = np.where(other.sk_indices == ia)[0][0]
-        #         va = self.sk_values[iia]
-        #         vb = other.sk_values[iib]
-        #         if self.norm == 0:
-        #             denominator = min(1, 
-        #                           self.threshold * (1 / self.vector_norm), 
-        #                           other.threshold * (1 / other.vector_norm))
-        #         else:
-        #             denominator = min(1, 
-        #                             self.threshold * ((va / self.vector_norm) ** 2)**(self.norm/2), 
-        #                             other.threshold * ((vb / other.vector_norm) ** 2)**(other.norm/2))
-        #         ip_est += va * vb / denominator
-        #         cnt+=1
-        # print(f"cnt: {cnt}")
-        # return (ip_est, cnt)
+    def inner_product(self, other: 'TSSketch', use_numba=False) -> float:
+        if use_numba:
+            return self.inner_product_numba(self.sk_indices, self.sk_values, self.norm, self.threshold, self.vector_norm, other.sk_indices, other.sk_values, other.norm, other.threshold, other.vector_norm)
+        else:
+            ip_est = 0
+            cnt = 0
+            for iia, ia in enumerate(self.sk_indices):
+                if ia in other.sk_indices:
+                    iib = np.where(other.sk_indices == ia)[0][0]
+                    va = self.sk_values[iia]
+                    vb = other.sk_values[iib]
+                    if self.norm == 0:
+                        denominator = min(1, 
+                                    self.threshold * (1 / self.vector_norm), 
+                                    other.threshold * (1 / other.vector_norm))
+                    else:
+                        denominator = min(1, 
+                                        self.threshold * ((va / self.vector_norm) ** 2)**(self.norm/2), 
+                                        other.threshold * ((vb / other.vector_norm) ** 2)**(other.norm/2))
+                    ip_est += va * vb / denominator
+                    cnt+=1
+            print(f"cnt: {cnt}")
+            return (ip_est, cnt)
 
 
 class TS(InnerProdSketcher):

@@ -19,7 +19,8 @@ class InnerProdSketcher(ABC):
         pass
     
     
-def compute_adaptive_threshold(vector, target_size, l_norm=2, delta=1e-9):
+def compute_adaptive_threshold(vector, target_size, l_norm=2, delta=1e-6):
+        # print("===compute_adaptive_threshold===")
         vector_l = np.linalg.norm(vector, ord=l_norm)
         C = np.argsort(vector)[-target_size:]
         C = set(C.tolist())

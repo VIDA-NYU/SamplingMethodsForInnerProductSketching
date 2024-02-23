@@ -2,6 +2,33 @@ import numpy as np
 from .abstract_class import InnerProdSketcher, InnerProdSketch, hash_kwise
 import heapq
 
+def compute_adaptive_threshold_corr(vector, target_size, delta=0.05):
+    vector_l0 = np.linalg.norm(vector, ord=0)
+    vector_l2 = np.linalg.norm(vector, ord=2)
+    vector_l4 = np.linalg.norm(vector, ord=4)
+    C = np.argsort(vector)[-target_size:]
+    C = set(C.tolist())
+    S = set()
+    T = target_size
+    sum_min = sum([min(1, T * max((val!=0)/vector_l0, (val/vector_l2)**2, (val/vector_l4)**4)) for val in vector])
+    if sum_min <= target_size:
+        return T
+    print(f"===\nbefore while loop\nsum_min: {sum_min}\ntarget_size: {target_size}\nT: {T}\ndelta: {delta}")
+    while sum_min > target_size:
+        T -= 10
+        sum_min = sum(
+            [min(1, T * max((val!=0)/vector_l0, (val/vector_l2) ** 2, (val/vector_l4) ** 4)) for val in vector])
+        print(f"---\n1st while loop\nsum_min: {sum_min}\ntarget_size: {target_size}\nT: {T}\ndelta: {delta}")
+        
+    while sum_min <= target_size*(1-delta):
+        O = set([i for i in C if T *  max((vector[i]!=0)/vector_l0, (vector[i]/vector_l2)**2, (vector[i]/vector_l4)**4) >= 1])
+        S |= O
+        C -= O
+        T = (target_size - len(S)) / sum([max((vector[i]!=0)/vector_l0, (vector[i]/vector_l2)**2, (vector[i]/vector_l4)**4) for i in range(len(vector)) if i not in S])
+        sum_min = sum([min(1, T *  max((val!=0)/vector_l0, (val/vector_l2)**2, (val/vector_l4)**4)) for val in vector])
+        print(f"---\n2nd while loop\nsum_min: {sum_min}\ntarget_size: {target_size}\nT: {T}\ndelta: {delta}")
+    return T
+
 #
 # Threshold Sampling Sketch for Correlation
 #
@@ -42,29 +69,26 @@ class TSCorr(InnerProdSketcher):
         hashes, values = hash_kwise(vector, self.seed)
         vector_nonzeroIndex = np.nonzero(vector)[0]
         nonzero_size = vector_nonzeroIndex.shape[0]
-        vector_l2, vector_l4 = np.linalg.norm(vector, ord=2), np.linalg.norm(vector, ord=4)
-        vector_norm2, vector_norm4 = (vector/vector_l2)**2, (vector/vector_l4)**4
+        vector_l0, vector_l2, vector_l4 = np.linalg.norm(vector, ord=0), np.linalg.norm(vector, ord=2), np.linalg.norm(vector, ord=4)
+        # vector_norm0, vector_norm2, vector_norm4 = (vector!=0)/vector_l0, (vector/vector_l2)**2, (vector/vector_l4)**4
 
-        k_min = 0
-        k_max = self.sketch_size
-        num_selected = 0
-        while k_min < k_max:
-            k_mid = (k_min + k_max) // 2
-            threshold_unweighted = k_mid/nonzero_size
-            threshold_weighted = k_mid
-            hashes_indices = (hashes <= threshold_unweighted) | (hashes <= threshold_weighted * vector_norm2[vector_nonzeroIndex]) | (
-                        hashes <= threshold_weighted * vector_norm4[vector_nonzeroIndex])
-            num_selected = np.sum(hashes_indices)
-            if num_selected == self.sketch_size:
-                break
-            elif num_selected > self.sketch_size:
-                k_max = k_mid
-            else:
-                k_min = k_mid + 1
-        
+        # m = compute_adaptive_threshold_corr(vector, self.sketch_size)
+        # hashes_indices = (hashes <= m * 1/nonzero_size) | (hashes <= m * vector_norm2[vector_nonzeroIndex]) | (
+        #                 hashes <= m * vector_norm4[vector_nonzeroIndex])
+        m = compute_adaptive_threshold_corr(vector, self.sketch_size)
+        vector_nz = vector[vector_nonzeroIndex]
+        hashes_indices = []
+        for hi, hash in enumerate(hashes):
+            ai = vector_nz[hi]
+            ti_1a = m * 1/vector_l0
+            ti_a = m * (ai/vector_l2)**2
+            ti_a2 = m * (ai/vector_l4)**4
+            Ti = max(ti_1a, ti_a, ti_a2)
+            if hash <= Ti:
+                hashes_indices.append(hi)
         sk_indices = vector_nonzeroIndex[hashes_indices]
         sk_values = values[hashes_indices]
-        return TSCorrSketch(sk_indices, sk_values, threshold_unweighted, threshold_weighted, vector_l2, vector_l4)
+        return TSCorrSketch(sk_indices, sk_values, m/nonzero_size, m, vector_l2, vector_l4)
 
 
 # 

@@ -64,13 +64,15 @@ class MHSketch(InnerProdSketch):
         ip_est = union_size_est * (sum_k/m)
         return ip_est
 
-    def inner_product(self, other: 'MHSketch') -> float:
-        return self.inner_product_numba(self.sk_hashes, self.sk_values, other.sk_hashes, other.sk_values)
-        # mean_min = np.mean([min(hA, hB) for hA, hB in zip(self.sk_hashes, other.sk_hashes)])
-        # union_size_est = (1 / mean_min - 1)
-        # sum_k = sum([(va * vb) for ha, hb, va, vb in zip(self.sk_hashes, other.sk_hashes, self.sk_values, other.sk_values) if ha == hb])
-        # ip_est = union_size_est * (sum_k/self.sketch_size)
-        # return ip_est
+    def inner_product(self, other: 'MHSketch', use_numba=False) -> float:
+        if use_numba:
+            return self.inner_product_numba(self.sk_hashes, self.sk_values, other.sk_hashes, other.sk_values)
+        else:
+            mean_min = np.mean([min(hA, hB) for hA, hB in zip(self.sk_hashes, other.sk_hashes)])
+            union_size_est = (1 / mean_min - 1)
+            sum_k = sum([(va * vb) for ha, hb, va, vb in zip(self.sk_hashes, other.sk_hashes, self.sk_values, other.sk_values) if ha == hb])
+            ip_est = union_size_est * (sum_k/self.sketch_size)
+            return ip_est
 
 
 class MH(InnerProdSketcher):
@@ -94,13 +96,32 @@ class WMHSketch(InnerProdSketch):
         self.sketch_size: int = sketch_size
         self.p = p
 
-    def inner_product(self, other: 'WMHSketch') -> float:
-        mean_min = np.mean([min(hA, hB) for hA, hB in zip(self.sk_hashes, other.sk_hashes)])
-        union_size_est = self.p * (1 / mean_min - 1) # p = 1/L
-        sum_m = sum([(va * vb) / min(va ** 2, vb ** 2) for ha, hb, va, vb in
-                     zip(self.sk_hashes, other.sk_hashes, self.sk_values, other.sk_values) if ha == hb])
-        ip_est = self.vector_l2 * other.vector_l2 * union_size_est * (sum_m/self.sketch_size)
+    @staticmethod
+    @njit(parallel=False)
+    def inner_product_numba(sk_hashesA, sk_valuesA, sk_hashesB, sk_valuesB, vecA_l2, vecB_l2, sketch_size, p):
+        m = len(sk_hashesA)
+        sum_min = 0.0
+        for hA,hB in zip(sk_hashesA, sk_hashesB):
+            sum_min += min(hA,hB)
+        mean_min = sum_min/m
+        union_size_est = p * (1 / mean_min - 1) # p = 1/L
+        sum_k = 0.0
+        for ha,hb,va,vb in zip(sk_hashesA, sk_hashesB, sk_valuesA, sk_valuesB):
+            if ha==hb:
+                sum_k += (va*vb)/min(va**2,vb**2)
+        ip_est = vecA_l2*vecB_l2*union_size_est*(sum_k/sketch_size)
         return ip_est
+
+    def inner_product(self, other: 'WMHSketch', use_numba=False) -> float:
+        if use_numba:
+            return self.inner_product_numba(self.sk_hashes, self.sk_values, other.sk_hashes, other.sk_values, self.vector_l2, other.vector_l2, self.sketch_size, self.p)
+        else:
+            mean_min = np.mean([min(hA, hB) for hA, hB in zip(self.sk_hashes, other.sk_hashes)])
+            union_size_est = self.p * (1 / mean_min - 1) # p = 1/L
+            sum_m = sum([(va * vb) / min(va ** 2, vb ** 2) for ha, hb, va, vb in
+                        zip(self.sk_hashes, other.sk_hashes, self.sk_values, other.sk_values) if ha == hb])
+            ip_est = self.vector_l2 * other.vector_l2 * union_size_est * (sum_m/self.sketch_size)
+            return ip_est
     
 class WMH(InnerProdSketcher):
     def __init__(self, sketch_size: int, seed: int, p: float=1e-7) -> None:

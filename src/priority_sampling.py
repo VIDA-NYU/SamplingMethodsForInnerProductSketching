@@ -30,25 +30,25 @@ class PSSketch(InnerProdSketch):
                 i += 1
             else:
                 j += 1
-        # return ip_est
-        return (ip_est, cnt)
+        return ip_est
     
-    def inner_product(self, other: 'PSSketch') -> float:
-        return self.inner_product_numba(self.sk_hashes, self.sk_values, self.norm, self.tau, other.sk_hashes, other.sk_values, other.norm, other.tau)
-
-        # ip_est = 0
-        # cnt = 0
-        # for h in self.sk_hashes:
-        #     if h in other.sk_hashes:
-        #         ia = np.where(self.sk_hashes == h)[0][0]
-        #         ib = np.where(other.sk_hashes == h)[0][0]
-        #         va = self.sk_values[ia]
-        #         vb = other.sk_values[ib]
-        #         denominator = min(1, ((va**2)**(self.norm/2))*self.tau, ((vb**2)**(self.norm/2))*other.tau)
-        #         ip_est += (va * vb)/denominator
-        #         cnt+=1
-        # print(f"cnt: {cnt}")
-        # return (ip_est, cnt)
+    def inner_product(self, other: 'PSSketch', use_numba=False) -> float:
+        if use_numba:
+            return self.inner_product_numba(self.sk_hashes, self.sk_values, self.norm, self.tau, other.sk_hashes, other.sk_values, other.norm, other.tau)
+        else:
+            ip_est = 0
+            cnt = 0
+            for h in self.sk_hashes:
+                if h in other.sk_hashes:
+                    ia = np.where(self.sk_hashes == h)[0][0]
+                    ib = np.where(other.sk_hashes == h)[0][0]
+                    va = self.sk_values[ia]
+                    vb = other.sk_values[ib]
+                    denominator = min(1, ((va**2)**(self.norm/2))*self.tau, ((vb**2)**(self.norm/2))*other.tau)
+                    ip_est += (va * vb)/denominator
+                    cnt+=1
+            print(f"cnt: {cnt}")
+            return (ip_est, cnt)
 
 
 class PS(InnerProdSketcher):

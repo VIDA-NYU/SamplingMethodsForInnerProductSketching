@@ -53,13 +53,18 @@ class CSSketch(InnerProdSketch):
 
     def inner_product(self, other: 'CSSketch') -> float:
         return np.median(np.sum(self.sk_values * other.sk_values, axis=1))
+        # return np.sum(self.sk_values * other.sk_values, axis=1)
 
 class CS(InnerProdSketcher):
-    def __init__(self, sketch_size: int, seed: int, prime: int = 2147483587, t: int=3) -> None:
+    def __init__(self, sketch_size: int, seed: int, prime: int = 2147483587, t: int=1, k_wise: int=4) -> None:
         self.sketch_size: int = sketch_size
+        print("self.sketch_size", self.sketch_size)
         self.seed: int = seed
         self.prime: int = prime
+        print("self.prime", self.prime)
         self.t: int = t # determines the number of hash functions
+        print("self.t", self.t)
+        self.k_wise: int = k_wise # the k-wise independence of the hash function
 
     def sketch(self, vector: np.ndarray) -> CSSketch:
         vec_ind = [i for i in range(len(vector))]
@@ -69,13 +74,21 @@ class CS(InnerProdSketcher):
         hs, gs = [], []
         for i in range(num_of_hashes):
             np.random.seed(seeds[i])
-            h_para = np.random.randint(1, self.prime, (1, 2))
-            h = np.mod(np.mod(h_para[:,0]*vec_ind+h_para[:,1], self.prime), self.sketch_size)
+            h_para = np.random.randint(1, self.prime, (1, self.k_wise))
+            
+            h_sum = 0
+            for exp in range(self.k_wise):
+                h_sum += h_para[:,exp]*(np.array(vec_ind)**exp)
+            h = np.mod(np.mod(h_sum, self.prime), self.sketch_size)
             hs.append(h)
 
             np.random.seed(seeds[i+num_of_hashes])
-            g_para = np.random.randint(1, self.prime, (1, 2))
-            g = np.mod(np.mod(g_para[:,0]*vec_ind+g_para[:,1], self.prime), 2)*2-1
+            g_para = np.random.randint(1, self.prime, (1, self.k_wise))
+
+            g_sum = 0
+            for exp in range(self.k_wise):
+                g_sum += g_para[:,exp]*(np.array(vec_ind)**exp)
+            g = np.mod(np.mod(g_sum, self.prime), 2)*2-1
             gs.append(g)
 
         sk_values = np.zeros((num_of_hashes, self.sketch_size))
