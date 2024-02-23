@@ -1,0 +1,105 @@
+import os
+import time
+import argparse
+import sys
+import pickle
+import numpy as np
+
+project_path = os.getcwd()
+script_path = os.path.join(project_path, "script")
+
+sys.path.append(os.getenv("PROJECT_PATH"))
+from script.plot import generate_plot_data, make_plot
+from utils import plot_parameters
+
+def commoand_plot(sketch_methods, data_file):
+	log_time = data_file.split("+")[-1]
+	command = 'time python \
+			'+os.path.join(script_path, 'plot.py')+' \
+			-data_file='+data_file+' \
+			-sketch_methods='+str(sketch_methods)+' \
+			> '+os.path.join(project_path, 'debug_log/plot_data_'+log_time)
+	print("="*33)
+	print("🚀🚀🚀 running: making plot")
+	print(command)
+	os.system(command)
+
+if __name__ == "__main__":
+	parser = argparse.ArgumentParser()
+	# parser.add_argument("-mode", "--mode", 
+	# 					help="mode of the experiment: ip or corr")
+	# parser.add_argument("--data_files",
+	# 					nargs='+', help='Input list of data files to plot')
+	parser.add_argument("-paper_fig", "--paper_fig",
+						help="specify the figure number in the paper you want to produce", type=int)
+	args = parser.parse_args()
+	# mode = args.mode or "ip"
+	# data_files = args.data_files or None
+	paper_fig = args.paper_fig or 3
+	if paper_fig == 3:
+		data_files = [
+			"log/mode_ip+overlap_0.01+outlier_0.02+max_10+corr_0.7+20231213002430",
+			"log/mode_ip+overlap_0.1+outlier_0.02+max_10+corr_0.7+20231213002932",
+			"log/mode_ip+overlap_0.5+outlier_0.02+max_10+corr_0.7+20231213003130",
+			"log/mode_ip+overlap_1.0+outlier_0.02+max_10+corr_0.7+20231213003333"
+		]
+		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
+	elif paper_fig == 4:
+		data_files = [
+			"log/mode_join_size+overlap_0.01+outlier_0.02+max_10+corr_0.7+20231213002433",
+			"log/mode_join_size+overlap_0.1+outlier_0.02+max_10+corr_0.7+20231213002929",
+			"log/mode_join_size+overlap_0.5+outlier_0.02+max_10+corr_0.7+20231213003131",
+			"log/mode_join_size+overlap_1.0+outlier_0.02+max_10+corr_0.7+20231213003331"
+		]
+		sketch_methods = ['jl', 'cs', 'mh', 'ts_uniform', 'ps_uniform']
+	elif paper_fig == 5:
+		data_files = [
+			"log/mode_ip+overlap_0.01+outlier_0.1+max_10+corr_0.7+20230825150130",
+			"log/mode_ip+overlap_0.1+outlier_0.1+max_10+corr_0.7+20230825150240",
+			"log/mode_ip+overlap_0.5+outlier_0.1+max_10+corr_0.7+20230825150410",
+			"log/mode_ip+overlap_1.0+outlier_0.1+max_10+corr_0.7+20230825150531"
+		]
+		sketch_methods = ['ts_1norm', 'ts_2norm', 'ps_1norm', 'ps_2norm']
+	elif paper_fig == 6:
+		data_files = [
+			"log/mode_corr+overlap_0.1+outlier_0.02+max_10+corr_-0.2+20240221013908",
+			"log/mode_corr+overlap_0.1+outlier_0.02+max_10+corr_0.4+20240221014108",
+			"log/mode_corr+overlap_0.1+outlier_0.02+max_10+corr_0.6+20240221233747",
+			"log/mode_corr+overlap_0.1+outlier_0.02+max_10+corr_0.8+20240221015507"
+		]
+		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_uniform', 'ts_corr', 'ps_uniform', 'ps_corr']
+	elif paper_fig == 7:
+		data_files = [
+			"log/mode_time+overlap_0.1+outlier_0.1+max_10+corr_0.7+20240221030840"
+		]
+		sketch_methods = ['jl', 'cs', 'mh', 'dmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
+	elif paper_fig == 10:
+		#tpch
+		log_file_name = 'log/analysis_supplier-lineitem-flat-z2-s1_iteration-300_storage-100-1000_202401131523'
+		log_results = pickle.load(open(log_file_name, "rb"))
+		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
+		plot_data = {sketch_method:generate_plot_data(log_results, sketch_method, mode='ip') for sketch_method in sketch_methods}
+		make_plot(plot_data, sketch_methods, plot_parameters, 
+					plot_type='ip_diff', 
+					fig_loc='fig/'+log_file_name.split('/')[1]+'.pdf'
+				)
+
+		#twitter
+		log_file_name = "log/analysis_follower-followee_202312140226"
+		log_results = pickle.load(open(log_file_name, "rb"))
+		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_2norm', 'ps_2norm', 'ts_uniform', 'ps_uniform']
+		plot_data = {sketch_method:generate_plot_data(log_results, sketch_method, mode='ip') for sketch_method in sketch_methods}
+		make_plot(plot_data, sketch_methods, plot_parameters, 
+					plot_type='ip_diff', 
+					fig_loc='fig/'+log_file_name.split('/')[1]+'.pdf'
+				)
+
+	# elif mode=='corr':
+	# 	sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_uniform', 'ts_corr', 'ps_uniform', 'ps_corr']
+	# elif mode=='time':
+	# 	sketch_methods = ['jl', 'cs', 'mh', 'dmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
+	sketch_methods = '+'.join(sketch_methods)
+
+	if paper_fig!=10:
+		for data_file in data_files:
+			commoand_plot(sketch_methods, data_file)
