@@ -1,2 +1,6 @@
-
+.direnv/
+.vscode/
+debug_log/
+__pycache__/
 .DS_Store
+.envrc

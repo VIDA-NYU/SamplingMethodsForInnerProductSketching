@@ -4,6 +4,7 @@ import argparse
 import sys
 import pickle
 import numpy as np
+import matplotlib.pyplot as plt
 
 project_path = os.getcwd()
 script_path = os.path.join(project_path, "script")
@@ -73,6 +74,48 @@ if __name__ == "__main__":
 			"log/mode_time+overlap_0.1+outlier_0.1+max_10+corr_0.7+20240221030840"
 		]
 		sketch_methods = ['jl', 'cs', 'mh', 'dmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
+	elif paper_fig == 9:
+		data = pickle.load(open("log/data_greater500", "rb"))
+		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_2norm', 'ts_uniform', 'ps_2norm', 'ps_uniform']
+		plt.rcParams.update({'font.size': 16})
+		x = [i for i in range(50,301,50)]
+		for sketch_method in sketch_methods:
+			y = data[sketch_method]['avg']
+			plt.plot(x, y, 
+					linestyle=plot_parameters[sketch_method][3],
+					label=plot_parameters[sketch_method][0], 
+					marker=plot_parameters[sketch_method][1], 
+					color=plot_parameters[sketch_method][2])
+		plt.legend(loc='upper center', 
+			bbox_to_anchor=(0.45, 1.3),
+			ncol=4)
+		plt.ylim(bottom=-0.003)
+		plt.xlabel('Storage Size', weight='bold')
+		plt.ylabel('Average Difference', weight='bold')
+		plt.savefig('fig/20news_greaterThan_500words.pdf', bbox_inches='tight')
+		plt.close()
+
+		data = pickle.load(open("log/data_all", "rb"))
+		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_2norm', 'ts_uniform', 'ps_2norm', 'ps_uniform']
+		plt.rcParams.update({'font.size': 16})
+		x = [i for i in range(50,301,50)]
+		for sketch_method in sketch_methods:
+			y = data[sketch_method]['avg']
+			plt.plot(x, y, 
+					linestyle=plot_parameters[sketch_method][3],
+					label=plot_parameters[sketch_method][0], 
+					marker=plot_parameters[sketch_method][1], 
+					color=plot_parameters[sketch_method][2])
+			
+		plt.legend(loc='upper center', 
+			bbox_to_anchor=(0.45, 1.3),
+			ncol=4)
+		plt.ylim(bottom=-0.003)
+		plt.xlabel('Storage Size', weight='bold')
+		plt.ylabel('Average Difference', weight='bold')
+		plt.savefig('fig/20news_all.pdf', bbox_inches='tight')
+		plt.close()
+
 	elif paper_fig == 10:
 		#tpch
 		log_file_name = 'log/analysis_supplier-lineitem-flat-z2-s1_iteration-300_storage-100-1000_202401131523'
@@ -94,12 +137,8 @@ if __name__ == "__main__":
 					fig_loc='fig/'+log_file_name.split('/')[1]+'.pdf'
 				)
 
-	# elif mode=='corr':
-	# 	sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_uniform', 'ts_corr', 'ps_uniform', 'ps_corr']
-	# elif mode=='time':
-	# 	sketch_methods = ['jl', 'cs', 'mh', 'dmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
 	sketch_methods = '+'.join(sketch_methods)
 
-	if paper_fig!=10:
+	if paper_fig not in [9,10]:
 		for data_file in data_files:
 			commoand_plot(sketch_methods, data_file)
