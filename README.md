@@ -13,14 +13,14 @@ This is the code for the paper "Sampling Based Methods for Inner Product Sketchi
 ## 🚀 Reproducing the experiments results
 To reproduce the experiments results, you can run the following command.
 
-#### 1. make sure you have the required packages installed
+#### 🔥 1. make sure you have the required packages installed
 
-#### 2. set correct environment variables PROJECT_PATH and SCRIPT_PATH by running:
+#### 🔥 2. set correct environment variables PROJECT_PATH and SCRIPT_PATH by running:
 ```bash
 source .bashrc
 ```
 
-#### 3. use the command line to run the script with the appropriate figure number. For example, to generate Figure 3, run:
+#### 🔥 3. use the command line to run the script with the appropriate figure number. For example, to generate Figure 3, run:
 ```bash
 python experiment_plot.py --paper_fig 3
 ```
@@ -32,7 +32,7 @@ And so on, except for the World Bank Experiemnts (Figure 8 and Table 2). Because
 ```bash
 WorldBankExperiment_Figure8_Table2.ipynb
 ```
-#### 4. The generated figures will be saved in the folder `fig/`
+#### 🔥 4. The generated figures will be saved in the folder `fig/`
 
 ## 🚀 Running your own experiments
 To run your own experiments, you can use the following command with differnt modes:
