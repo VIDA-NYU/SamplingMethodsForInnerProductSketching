@@ -2,7 +2,7 @@
 
 This is the code for the paper "Sampling Based Methods for Inner Product Sketching" submitted to VLDB 2024.
 
-## Requirements
+## 🚀 Requirements
 - matplotlib==3.7.
 - numba==0.57.1
 - numpy==1.24.4
@@ -10,7 +10,7 @@ This is the code for the paper "Sampling Based Methods for Inner Product Sketchi
 - scipy==1.11.1
 - statsmodels==0.14.0
 
-## Reproducing the experiments results
+## 🚀 Reproducing the experiments results
 To reproduce the experiments results, you can run the following command.
 
 #### 1. make sure you have the required packages installed
@@ -34,7 +34,7 @@ WorldBankExperiment_Figure8_Table2.ipynb
 ```
 #### 4. The generated figures will be saved in the folder `fig/`
 
-## Running your own experiments
+## 🚀 Running your own experiments
 To run your own experiments, you can use the following command with differnt modes:
 - ip: Inner Product
 - corr: Correlation
