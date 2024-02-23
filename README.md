@@ -26,7 +26,7 @@ python experiment_plot.py --paper_fig 3
 ```
 To generate Figure 4, run:
 ```bash
-hon experiment_plot.py --paper_fig 4
+pyhon experiment_plot.py --paper_fig 4
 ```
 And so on, except for the World Bank Experiemnts (Figure 8 and Table 2). Because the figure is in a different format and the table is easier to show in a jupyter notebook. To generate these, run:
 ```bash
