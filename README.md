@@ -1,6 +1,7 @@
 # Sampling Based Methods for Inner Product Sketching
 
 This is the code for the paper "Sampling Based Methods for Inner Product Sketching" submitted to VLDB 2024.
+The extended version of the paper is available at https://arxiv.org/abs/2309.16157
 
 ## 🚀 Requirements
 - matplotlib==3.7.
