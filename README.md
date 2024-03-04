@@ -11,6 +11,8 @@ The extended version of the paper is available at https://arxiv.org/abs/2309.161
 - scipy==1.11.1
 - statsmodels==0.14.0
 
+## 🚀 Data generation
+
 ## 🚀 Reproducing the experiments results
 To reproduce the experiments results, you can run the following command.
 
