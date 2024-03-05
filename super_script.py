@@ -73,12 +73,15 @@ if __name__ == "__main__":
 		plot_names = args.plot_names
 		print("plot_names", plot_names)
 	
-	outlier_pcts = [0.01, 0.02, 0.04][1:2]
-	outlier_maxes = [10,20,50][:1] # min is default as 0
-	overlaps = [0.01, 0.1, 0.5, 1.0][:1]
+	outlier_pcts = [0.02]
+	outlier_maxes = [10] # min is default as 0
+	overlaps = [0.01, 0.1, 0.5, 1.0][1:]
 	corrs = [-0.2, 0.4, -0.6, 0.8][:1]
 	if mode=='ip':
 		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
+	elif mode=='1normVS2norm':
+		sketch_methods = ['ts_1norm', 'ts_2norm', 'ps_1norm', 'ps_2norm']
+		mode = 'ip'
 	elif mode == 'join_size':
 		sketch_methods = ['jl', 'cs', 'mh', 'ts_uniform', 'ps_uniform']
 	elif mode=='corr':
@@ -92,10 +95,10 @@ if __name__ == "__main__":
 
 	if mode == 'ip' or mode == 'join_size':
 		corr = 0.7
-		start_size = 100
-		end_size = 1000
-		interval_size = 100
-		iteration = 1
+		start_size = 200
+		end_size = 2000
+		interval_size = 200
+		iteration = 100
 		t = 1
 		for outlier_pct in outlier_pcts:
 			for outlier_max in outlier_maxes:
@@ -113,7 +116,7 @@ if __name__ == "__main__":
 		start_size = 200
 		end_size = 2000
 		interval_size = 200
-		iteration = 100
+		iteration = 5
 		t = 1
 		for outlier_pct in outlier_pcts:
 			for outlier_max in outlier_maxes:
@@ -139,7 +142,8 @@ if __name__ == "__main__":
 
 		current_time = time.strftime("%Y,%m,%d,%H,%M,%S").split(',')
 		log_time = ''.join(current_time)
-		log_file_name = '+'.join(['overlap_'+str(overlap), 'outlier_'+str(outlier_pct), 'corr_'+str(corr), 'mode_'+mode, log_time])
+		log_file_name = '+'.join(['mode_'+mode, 'overlap_'+str(overlap), 'outlier_'+str(outlier_pct), 'max_'+str(outlier_max), 'corr_'+str(corr), log_time])
+		# log_file_name = '+'.join(['overlap_'+str(overlap), 'outlier_'+str(outlier_pct), 'corr_'+str(corr), 'mode_'+mode, log_time])
 		log_name = project_path+'/log/'+log_file_name
 		# run experiment
 		command_experiment_ip(outlier_pct, outlier_max, mode, sketch_methods, corr, t, start_size, end_size, interval_size, iteration, overlap, log_time, log_name)

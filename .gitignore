@@ -1,6 +1,7 @@
 .direnv/
 .vscode/
-debug_log/
+debug_log/plot_*
+debug_log/run_*
 __pycache__/
 .DS_Store
 .envrc

@@ -46,9 +46,9 @@ class PSSketch(InnerProdSketch):
                     vb = other.sk_values[ib]
                     denominator = min(1, ((va**2)**(self.norm/2))*self.tau, ((vb**2)**(self.norm/2))*other.tau)
                     ip_est += (va * vb)/denominator
-                    cnt+=1
-            print(f"cnt: {cnt}")
-            return (ip_est, cnt)
+                    # cnt+=1
+            # print(f"cnt: {cnt}")
+            return ip_est
 
 
 class PS(InnerProdSketcher):

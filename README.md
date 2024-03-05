@@ -1,27 +1,72 @@
 # Sampling Based Methods for Inner Product Sketching
 
 This is the code for the paper "Sampling Based Methods for Inner Product Sketching" submitted to VLDB 2024.
-The extended version of the paper is available at https://arxiv.org/abs/2309.16157
+The extended version of the paper is available at: 
+
+- https://arxiv.org/abs/2309.16157
+
+We suggest users to read the paper for a better understanding of the experiments before using the code.
+
+## Contents
+
+This README file is divided into the following sections:
+
+* [1. Requirements](#🚀-requirements)
+* [2. Settup before reproducing the plots](#🚀-settup-before-reproducing-the-plots)
+* [3. Reproducing the plots by running experiments](#🚀-reproducing-the-plots-by-running-experiments)
+* [4. Reproducing the plots directly from saved data](#🚀-reproducing-the-plots-directly-from-saved-data)
 
 ## 🚀 Requirements
-- matplotlib==3.7.
+These experiments were run using `Python 3.9.9` with these required package. They are also listed in the `requirements.txt` file.
+- matplotlib==3.7.2
 - numba==0.57.1
 - numpy==1.24.4
 - pandas==2.0.3
 - scipy==1.11.1
 - statsmodels==0.14.0
 
-## 🚀 Data generation
+## 🚀 Settup before reproducing the plots
 
-## 🚀 Reproducing the experiments results
-To reproduce the experiments results, you can run the following command.
+### 🔥 1. make sure you have the required packages installed
 
-#### 🔥 1. make sure you have the required packages installed
-
-#### 🔥 2. set correct environment variables PROJECT_PATH and SCRIPT_PATH by running:
+### 🔥 2. set correct environment variables PROJECT_PATH and SCRIPT_PATH by running:
 ```bash
 source .bashrc
 ```
+
+## 🚀 Reproducing the plots by running experiments
+
+### 🔥 make sure you have done the [Settup](#🚀-settup-before-reproducing-the-plots)
+
+### 🔥 use the command line to run the script with the appropriate mode.
+
+### 🔥 following are instructions to reproduce the plots by running experiments, for each part it has following parts:
+- explanation of the experiment
+- command to run the experiment
+- expected time to run the experiment based on the machine used to run the experiments: 
+  - `MacBook Pro (15-inch, 2019)`
+  - `2.3 GHz 8-Core Intel Core i9` with `16GB` RAM
+
+#### ☁️ Figure 3: Inner product estimation for synthetic *real* data.
+- Command: `python super_script.py -mode=ip`
+- Expected time: 
+  - 3.5 hour per plot
+  - 14 hours for all 4 plots in Figure 3
+
+#### ☁️ Figure 4: Inner product estimation for synthetic *binary* data. This can be applied to problems like join size estimation for tables with unique keys and set intersection estimation.
+- Command: `python super_script.py -mode=join_size`
+- Expected time: 
+  - 1.8 hour per plot
+  - 7.2 hours for all 4 plots in Figure 4
+
+#### ☁️ Figure 6: Join-Correlation estimation for synthetic data.
+- Command: `python super_script.py -mode=corr`
+- Expected time: 
+  - 7 hour per plot
+  - 28 hours for all 4 plots in Figure 6
+
+## 🚀 Reproducing the plots directly from saved data
+To reproduce the experiments results, you can run the following command.
 
 #### 🔥 3. use the command line to run the script with the appropriate figure number. For example, to generate Figure 3, run:
 ```bash
@@ -38,12 +83,4 @@ WorldBankExperiment_Figure8_Table2.ipynb
 #### 🔥 4. The generated figures will be saved in the folder `fig/`
 
 ## 🚀 Running your own experiments
-To run your own experiments, you can use the following command with differnt modes:
-- ip: Inner Product
-- corr: Correlation
-- join_size: Join Size
 
-For example, to run the Inner Product experiment, run:
-```bash
-python super_script.py -mode=ip
-```

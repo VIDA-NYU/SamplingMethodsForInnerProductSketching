@@ -60,9 +60,9 @@ class TSSketch(InnerProdSketch):
                                         self.threshold * ((va / self.vector_norm) ** 2)**(self.norm/2), 
                                         other.threshold * ((vb / other.vector_norm) ** 2)**(other.norm/2))
                     ip_est += va * vb / denominator
-                    cnt+=1
-            print(f"cnt: {cnt}")
-            return (ip_est, cnt)
+                    # cnt+=1
+            # print(f"cnt: {cnt}")
+            return ip_est
 
 
 class TS(InnerProdSketcher):

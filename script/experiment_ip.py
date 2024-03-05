@@ -109,9 +109,6 @@ if __name__ == "__main__":
             ip, corr, n = true_values(vecA, vecB)
             results[log_key]['true'] = (ip, corr, n, ip_scale)
             for sketch_method in sketch_methods:
-                if i_iter>=100 and sketch_method!='mh':
-                    print("skipped", sketch_method)
-                    continue
                 print("+"*20, sketch_method, "+"*20)
                 if results_compare is not None:
                     if sketch_method in results_compare[log_key]:
