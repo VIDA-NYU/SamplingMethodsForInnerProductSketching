@@ -11,12 +11,12 @@ We suggest users to read the paper for a better understanding of the experiments
 
 This README file is divided into the following sections:
 
-* [1. Requirements](#🚀-requirements)
-* [2. Settup before reproducing the plots](#🚀-settup-before-reproducing-the-plots)
-* [3. Reproducing the plots by running experiments](#🚀-reproducing-the-plots-by-running-experiments)
-* [4. Reproducing the plots directly from saved data](#🚀-reproducing-the-plots-directly-from-saved-data)
+* [1. Requirements](#🚀-1-requirements)
+* [2. Settup before reproducing the plots](#🚀-2-settup-before-reproducing-the-plots)
+* [3. Reproducing the plots by running experiments](#🚀-3-reproducing-the-plots-by-running-experiments)
+* [4. Reproducing the plots directly from saved data](#🚀-4-reproducing-the-plots-directly-from-saved-data)
 
-## 🚀 Requirements
+## 🚀 1. Requirements
 These experiments were run using `Python 3.9.9` with these required package. They are also listed in the `requirements.txt` file.
 - matplotlib==3.7.2
 - numba==0.57.1
@@ -25,22 +25,22 @@ These experiments were run using `Python 3.9.9` with these required package. The
 - scipy==1.11.1
 - statsmodels==0.14.0
 
-## 🚀 Settup before reproducing the plots
+## 🚀 2. Settup before reproducing the plots
 
-### 🔥 1. make sure you have the required packages installed
+### 🔥 2.1 make sure you have the required packages installed
 
-### 🔥 2. set correct environment variables PROJECT_PATH and SCRIPT_PATH by running:
+### 🔥 2.2 set correct environment variables PROJECT_PATH and SCRIPT_PATH by running:
 ```bash
 source .bashrc
 ```
 
-## 🚀 Reproducing the plots by running experiments
+## 🚀 3. Reproducing the plots by running experiments
 
-### 🔥 make sure you have done the [Settup](#🚀-settup-before-reproducing-the-plots)
+### 🔥 3.1 make sure you have done the [Settup](#🚀-settup-before-reproducing-the-plots)
 
-### 🔥 use the command line to run the script with the appropriate mode.
+### 🔥 3.2 use the command line to run the script with the appropriate mode.
 
-### 🔥 following are instructions to reproduce the plots by running experiments, for each part it has following parts:
+### 🔥 3.3 following are instructions to reproduce the plots by running experiments, for each part it has following parts:
 - explanation of the experiment
 - command to run the experiment
 - expected time to run the experiment based on the machine used to run the experiments: 
@@ -65,10 +65,10 @@ source .bashrc
   - 7 hour per plot
   - 28 hours for all 4 plots in Figure 6
 
-## 🚀 Reproducing the plots directly from saved data
+## 🚀 4. Reproducing the plots directly from saved data
 To reproduce the experiments results, you can run the following command.
 
-#### 🔥 3. use the command line to run the script with the appropriate figure number. For example, to generate Figure 3, run:
+#### 🔥 use the command line to run the script with the appropriate figure number. For example, to generate Figure 3, run:
 ```bash
 python experiment_plot.py --paper_fig 3
 ```
@@ -80,7 +80,7 @@ And so on, except for the World Bank Experiemnts (Figure 8 and Table 2). Because
 ```bash
 WorldBankExperiment_Figure8_Table2.ipynb
 ```
-#### 🔥 4. The generated figures will be saved in the folder `fig/`
+#### 🔥 The generated figures will be saved in the folder `fig/`
 
 ## 🚀 Running your own experiments
 
