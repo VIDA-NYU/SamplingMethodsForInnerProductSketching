@@ -79,10 +79,10 @@ def make_plot(plot_data, sketch_methods, plot_parameters, plot_type='ip_diff', t
                     marker=plot_parameters[sketch_method][1], 
                     color=plot_parameters[sketch_method][2],
                     linestyle=plot_parameters[sketch_method][3])
-    plt.legend(loc='upper center', 
-        bbox_to_anchor=(0.45, 1.35),
-        # bbox_to_anchor=(0.45, 1.15),
-        ncol=4)
+    # plt.legend(loc='upper center', 
+    #     bbox_to_anchor=(0.45, 1.35),
+    #     # bbox_to_anchor=(0.45, 1.15),
+    #     ncol=4)
     plt.ylabel("Scaled Average Difference", weight='bold')
     plt.xlabel("Storage Size", weight='bold')
     plt.ylim(bottom=-0.003)
@@ -158,14 +158,17 @@ def create_plot_parser():
         help="data file to make plots", type=str)
     parser.add_argument("-sketch_methods", "--sketch_methods",
         help="sketch methods to run", type=str)
+    parser.add_argument("-fig_name", "--fig_name", 
+        help="figure name", type=str)
     args = parser.parse_args()
     assert args.sketch_methods is not None, "sketch_methods is missing"
     data_file = args.data_file
     sketch_methods = args.sketch_methods.split("+")
-    return data_file, sketch_methods
+    fig_name = args.fig_name or None
+    return data_file, sketch_methods, fig_name
 
 if __name__ == "__main__":
-    data_file, sketch_methods = create_plot_parser()
+    data_file, sketch_methods, fig_name = create_plot_parser()
     overlap, outlier, corr, mode, title_suffix, log_file_name = extract_from(data_file)
     log_results = pickle.load(open(data_file, "rb"))
     print(f"mode: {mode}, sketch_methods: {sketch_methods}")
@@ -179,9 +182,12 @@ if __name__ == "__main__":
         plot_types = ['sketch_time']
 
     plot_data = {sketch_method:generate_plot_data(log_results, sketch_method, mode=mode) for sketch_method in sketch_methods}
+    if fig_name is None:
+        fig_loc = project_path+'/fig/'+log_file_name+'.pdf'
+    else:
+        fig_loc = project_path+'/fig/'+fig_name+'.pdf'
     for plot_type in plot_types:
         make_plot(plot_data, sketch_methods, plot_parameters, 
             plot_type=plot_type, 
             title = title_suffix,
-            # fig_loc=project_path+'/fig/'+plot_type+'-'+log_file_name+'.pdf')
-            fig_loc=project_path+'/fig/'+log_file_name+'.pdf')
+            fig_loc = fig_loc)

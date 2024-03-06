@@ -59,6 +59,12 @@ source .bashrc
   - 1.8 hour per plot
   - 7.2 hours for all 4 plots in Figure 4
 
+#### ☁️ Figure 5: Comparison of End-Biased Sampling (TS-1norm) and its Priority Sampling counterpart (PS-1norm) against our TS-weighted and PS-weighted methods
+- Command: `python super_script.py -mode=1normVS2norm`
+- Expected time: 
+  - 16min per plot
+  - 64min for all 4 plots in Figure 5
+
 #### ☁️ Figure 6: Join-Correlation estimation for synthetic data.
 - Command: `python super_script.py -mode=corr`
 - Expected time: 
