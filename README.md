@@ -12,7 +12,7 @@ We suggest users to read the paper for a better understanding of the experiments
 This README file is divided into the following sections:
 
 * [1. Requirements](#🚀-1-requirements)
-* [2. Settup before reproducing the plots](#🚀-2-settup-before-reproducing-the-plots)
+* [2. Setup before reproducing the plots](#🚀-2-setup-before-reproducing-the-plots)
 * [3. Reproducing the plots by running experiments](#🚀-3-reproducing-the-plots-by-running-experiments)
 * [4. Reproducing the plots directly from saved data](#🚀-4-reproducing-the-plots-directly-from-saved-data)
 
@@ -25,7 +25,7 @@ These experiments were run using `Python 3.9.9` with these required package. The
 - scipy==1.11.1
 - statsmodels==0.14.0
 
-## 🚀 2. Settup before reproducing the plots
+## 🚀 2. Setup before reproducing the plots
 
 ### 🔥 2.1 make sure you have the required packages installed
 
@@ -36,7 +36,7 @@ source .bashrc
 
 ## 🚀 3. Reproducing the plots by running experiments
 
-### 🔥 3.1 make sure you have done the [Settup](#🚀-settup-before-reproducing-the-plots)
+### 🔥 3.1 make sure you have done the [Setup](#🚀-setup-before-reproducing-the-plots)
 
 ### 🔥 3.2 use the command line to run the script with the appropriate mode.
 
@@ -70,6 +70,11 @@ source .bashrc
 - Expected time: 
   - 7 hour per plot
   - 28 hours for all 4 plots in Figure 6
+
+#### ☁️ Figure 7: Sketch construction time. Based on the equipment used to run the experiments, you may not be able to reproduce the exact time. However, you can still see the similar trend in the time taken by each method.
+- Command: `python super_script.py -mode=time`
+- Expected time: 
+  - 3.5 hour for the plot
 
 ## 🚀 4. Reproducing the plots directly from saved data
 To reproduce the experiments results, you can run the following command.

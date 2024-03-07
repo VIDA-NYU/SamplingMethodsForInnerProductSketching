@@ -1,5 +1,5 @@
 import numpy as np
-from src import JL, CS, KMV, MH, WMH, TS, PS, TSCorr, PSCorr
+from src import JL, CS, KMV, MH, WMH, TS, PS, TSCorr, PSCorr, DartMH
 
 def true_values(vecA, vecB):
     iA = np.array([1 if i!=0 else 0 for i in vecA])

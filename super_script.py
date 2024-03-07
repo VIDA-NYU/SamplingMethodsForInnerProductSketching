@@ -7,16 +7,23 @@ project_path = os.getenv("PROJECT_PATH")
 script_path = os.getenv("SCRIPT_PATH")
 
 def commoand_plot(sketch_methods, data_file, fig_name=None):
-    log_time = data_file.split("+")[-1]
-    command = 'time python \
+	log_time = data_file.split("+")[-1]
+	if fig_name is not None:
+		command = 'time python \
 			'+script_path+'/plot.py \
 			-data_file='+data_file+' \
 			-sketch_methods='+str(sketch_methods)+' \
 			-fig_name='+fig_name+' \
 			> '+project_path+'/debug_log/plot_data_mode_'+mode+'_'+log_time
-    print("🚀🚀🚀 running: plot")
-    print(command)
-    os.system(command)
+	else:
+		command = 'time python \
+			'+script_path+'/plot.py \
+			-data_file='+data_file+' \
+			-sketch_methods='+str(sketch_methods)+' \
+			> '+project_path+'/debug_log/plot_data_mode_'+mode+'_'+log_time
+	print("🚀🚀🚀 running: plot")
+	print(command)
+	os.system(command)
 
 def command_experiment_ip(outlier_pct, outlier_max, mode, sketch_methods, corr, t, start_size, end_size, interval_size, iteration, overlap, log_time, log_name):
     command = 'time python \
@@ -86,6 +93,8 @@ if __name__ == "__main__":
 		sketch_methods = ['jl', 'cs', 'mh', 'ts_uniform', 'ps_uniform']
 	elif mode=='corr':
 		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_uniform', 'ts_corr', 'ps_uniform', 'ps_corr']
+	elif mode=='time':
+		sketch_methods = ['jl', 'cs', 'mh', 'dmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
 	sketch_methods = '+'.join(sketch_methods)
 
 	if plot_only:
@@ -155,7 +164,7 @@ if __name__ == "__main__":
 		start_size = 1000
 		end_size = 5000
 		interval_size = 1000
-		iteration = 27
+		iteration = 3
 		overlap = 0.1
 		outlier_pct = 0.1
 		outlier_max = 10
