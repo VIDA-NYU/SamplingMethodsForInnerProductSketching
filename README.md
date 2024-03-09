@@ -76,6 +76,16 @@ source .bashrc
 - Expected time: 
   - 3.5 hour for the plot
 
+#### ☁️ Figure 10:  Join size estimation for the Twitter and TPC-H datasets.
+- Skewed TPC-H dataset
+  - Command: `python super_script.py -mode=tpch`
+  - Expected time: 
+    - 2 hour
+- Twitter dataset
+  - Command: `python super_script.py -mode=twitter`
+  - Expected time: 
+    - 8 hour
+
 ## 🚀 4. Reproducing the plots directly from saved data
 To reproduce the experiments results, you can run the following command.
 
