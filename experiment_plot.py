@@ -118,7 +118,7 @@ if __name__ == "__main__":
 
 	elif paper_fig == 10:
 		#tpch
-		log_file_name = 'log/analysis_supplier-lineitem-flat-z2-s1_iteration-300_storage-100-1000_202401131523'
+		log_file_name = 'existing_log/analysis_supplier-lineitem-flat-z2-s1_iteration-300_storage-100-1000_tpch'
 		log_results = pickle.load(open(log_file_name, "rb"))
 		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
 		plot_data = {sketch_method:generate_plot_data(log_results, sketch_method, mode='ip') for sketch_method in sketch_methods}
@@ -128,7 +128,7 @@ if __name__ == "__main__":
 				)
 
 		#twitter
-		log_file_name = "log/analysis_follower-followee_202312140226"
+		log_file_name = "existing_log/analysis_follower-followee_twitter"
 		log_results = pickle.load(open(log_file_name, "rb"))
 		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_2norm', 'ps_2norm', 'ts_uniform', 'ps_uniform']
 		plot_data = {sketch_method:generate_plot_data(log_results, sketch_method, mode='ip') for sketch_method in sketch_methods}
