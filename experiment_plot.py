@@ -39,10 +39,10 @@ if __name__ == "__main__":
 	paper_fig = args.paper_fig or 3
 	if paper_fig == 3:
 		data_files = [
-			"existing_log/mode_ip+overlap_0.01+outlier_0.02+max_10+corr_0.7+20231213002430",
-			"existing_log/mode_ip+overlap_0.1+outlier_0.02+max_10+corr_0.7+20231213002932",
-			"existing_log/mode_ip+overlap_0.5+outlier_0.02+max_10+corr_0.7+20231213003130",
-			"existing_log/mode_ip+overlap_1.0+outlier_0.02+max_10+corr_0.7+20231213003333"
+			"existing_log/mode_ip+overlap_0.01+outlier_0.02+max_10+corr_0.7+synthetic",
+			"existing_log/mode_ip+overlap_0.1+outlier_0.02+max_10+corr_0.7+synthetic",
+			"existing_log/mode_ip+overlap_0.5+outlier_0.02+max_10+corr_0.7+synthetic",
+			"existing_log/mode_ip+overlap_1.0+outlier_0.02+max_10+corr_0.7+synthetic"
 		]
 		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
 	elif paper_fig == 4:
