@@ -71,7 +71,7 @@ if __name__ == "__main__":
 		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_uniform', 'ts_corr', 'ps_uniform', 'ps_corr']
 	elif paper_fig == 7:
 		data_files = [
-			"existing_log/mode_time+overlap_0.1+outlier_0.1+max_10+corr_0.7+20240221030840"
+			"existing_log/mode_time+overlap_0.1+outlier_0.1+max_10+corr_0.7+synthetic"
 		]
 		sketch_methods = ['jl', 'cs', 'mh', 'dmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
 	elif paper_fig == 9:
