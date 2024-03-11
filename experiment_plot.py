@@ -75,7 +75,7 @@ if __name__ == "__main__":
 		]
 		sketch_methods = ['jl', 'cs', 'mh', 'dmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
 	elif paper_fig == 9:
-		data = pickle.load(open("log/data_greater500", "rb"))
+		data = pickle.load(open("existing_log/20news_greater500", "rb"))
 		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_2norm', 'ts_uniform', 'ps_2norm', 'ps_uniform']
 		plt.rcParams.update({'font.size': 16})
 		x = [i for i in range(50,301,50)]
@@ -95,7 +95,7 @@ if __name__ == "__main__":
 		plt.savefig('fig/20news_greaterThan_500words.pdf', bbox_inches='tight')
 		plt.close()
 
-		data = pickle.load(open("log/data_all", "rb"))
+		data = pickle.load(open("existing_log/20news_all", "rb"))
 		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_2norm', 'ts_uniform', 'ps_2norm', 'ps_uniform']
 		plt.rcParams.update({'font.size': 16})
 		x = [i for i in range(50,301,50)]
