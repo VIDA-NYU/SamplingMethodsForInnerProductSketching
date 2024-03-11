@@ -76,6 +76,18 @@ source .bashrc
 - Expected time: 
   - 3.5 hour for the plot
 
+### Note that for following real data experiments, depending on the seed and samples, the results may vary slightly. However, the trend will be similar.
+
+#### ☁️ Figure 8 and Table 2:  Inner product, correlation, and join size estimations for the World Bank data,
+- Command: `python super_script.py -mode=wbf`
+- Expected time: 
+  - 6 hour for the figure and CSVs
+
+#### ☁️ Figure 9:  Text similarity estimation using the 20 Newsgroups dataset
+- Command: `python super_script.py -mode=20news`
+- Expected time: 
+  - 2 hour
+
 #### ☁️ Figure 10:  Join size estimation for the Twitter and TPC-H datasets.
 - Skewed TPC-H dataset
   - Command: `python super_script.py -mode=tpch`
