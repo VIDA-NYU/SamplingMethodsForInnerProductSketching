@@ -1,10 +1,12 @@
 import os
-import time
 import argparse
 import sys
 import pickle
 import numpy as np
+import pandas as pd
+from collections import defaultdict
 import matplotlib.pyplot as plt
+from sklearn.metrics import r2_score
 
 project_path = os.getcwd()
 script_path = os.path.join(project_path, "script")
@@ -24,6 +26,21 @@ def commoand_plot(sketch_methods, data_file):
 	print("🚀🚀🚀 running: making plot")
 	print(command)
 	os.system(command)
+
+def save_csv(data_list, sketch_methods, mode):
+    avg_diffs, r2_scores = [], []
+    for sketch_method in sketch_methods:
+        res = data_list[sketch_method]
+        val_t = [i[0] for i in res]
+        val_e = [i[1] for i in res]
+        val_diff = np.average([abs(i[0]-i[1]) for i in res])
+        r2 = r2_score(val_t, val_e)
+        avg_diffs.append(round(val_diff, 3))
+        r2_scores.append(round(r2, 3))
+    data = {"Sketch Method":[plot_parameters[sketch_method][0] for sketch_method in sketch_methods], "Average Difference":avg_diffs, "R2 Score":r2_scores}
+    df = pd.DataFrame(data)
+    sorted_df = df.sort_values(by="Average Difference", ascending=True)
+    sorted_df.to_csv('log/WorldBank_' + mode+'.csv', index=False)
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
@@ -74,6 +91,75 @@ if __name__ == "__main__":
 			"existing_log/mode_time+overlap_0.1+outlier_0.1+max_10+corr_0.7+synthetic"
 		]
 		sketch_methods = ['jl', 'cs', 'mh', 'dmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
+	elif paper_fig == 8:
+		## Join Size
+		joinSize_data = pickle.load(open("existing_log/analysis_wbf_join_size", "rb"))
+		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_2norm', 'ps_2norm', 'ts_uniform', 'ps_uniform']
+		joinSize_results = defaultdict(list)
+		for log_key in joinSize_data:
+			joinSize, corr, _ = joinSize_data[log_key]['true']
+			if np.isnan(corr) or np.isinf(corr):
+				continue
+			for sketch_method in sketch_methods:
+				try:
+					joinSize_est, _, _, _, _ = joinSize_data[log_key][sketch_method]
+				except:
+					joinSize_est, _, _ = joinSize_data[log_key][sketch_method]
+				joinSize_results[sketch_method].append((joinSize, joinSize_est))
+		save_csv(joinSize_results, sketch_methods, "join_size")
+
+		ip_data = pickle.load(open("existing_log/analysis_wbf_ip", "rb"))
+		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_2norm', 'ps_2norm', 'ts_uniform', 'ps_uniform']
+		ip_results = defaultdict(list)
+		for log_key in ip_data:
+			ip, corr, _ = ip_data[log_key]['true']
+			if np.isnan(corr) or np.isinf(corr):
+				continue
+			for sketch_method in sketch_methods:
+				try:
+					ip_est, _, _, _, _ = ip_data[log_key][sketch_method]
+				except:
+					ip_est, _, _ = ip_data[log_key][sketch_method]
+				ip_results[sketch_method].append((ip, ip_est))
+		save_csv(ip_results, sketch_methods, "ip")
+
+		corr_data = pickle.load(open("existing_log/analysis_wbf_corr", "rb"))
+		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_corr', 'ps_corr', 'ts_uniform', 'ps_uniform']
+		corr_results = defaultdict(list)
+		for log_key in corr_data:
+			ip, corr, _ = corr_data[log_key]['true']
+			if np.isnan(corr) or np.isinf(corr):
+				continue
+			for sketch_method in sketch_methods:
+				try:
+					corr_est = corr_data[log_key][sketch_method]
+				except:
+					continue
+				corr_results[sketch_method].append((corr, corr_est))
+		save_csv(corr_results, sketch_methods, "corr")
+
+		plt.rcParams.update({'font.size': 16})
+		sketch_methods_plot = ['ps_corr', 'jl']
+
+		for sketch_method in sketch_methods_plot:
+			res = corr_results[sketch_method]
+			corr_t = [i[0] for i in res]
+			corr_e = [i[1] for i in res]
+			corr_diff = np.average([abs(i[0]-i[1]) for i in res])
+			r2 = r2_score(corr_t, corr_e)
+			print(f"sketch_method: {sketch_method}\ncorr_diff: {corr_diff}\nr2_score: {r2}")
+
+			r2 = round(r2, 3)
+			err = round(corr_diff, 3)
+			plt.scatter(corr_t, corr_e, s=3, alpha=0.1,label=f'$R^2$: {r2}\nAvg error: {err}')
+			plt.legend(loc='lower right')
+			plt.xlabel('Actual Correlation', weight='bold')
+			plt.ylabel('Estimated Correlation', weight='bold')
+			plt.xlim(-0.7)
+			plt.savefig('fig/wbf_corr_scatter_'+plot_parameters[sketch_method][0]+'.pdf', bbox_inches='tight')
+			plt.close()
+
+
 	elif paper_fig == 9:
 		data = pickle.load(open("existing_log/20news_greater500", "rb"))
 		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_2norm', 'ts_uniform', 'ps_2norm', 'ps_uniform']
@@ -139,6 +225,6 @@ if __name__ == "__main__":
 
 	sketch_methods = '+'.join(sketch_methods)
 
-	if paper_fig not in [9,10]:
+	if paper_fig not in [8,9,10]:
 		for data_file in data_files:
 			commoand_plot(sketch_methods, data_file)

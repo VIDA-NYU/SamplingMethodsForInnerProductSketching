@@ -58,12 +58,12 @@ class CSSketch(InnerProdSketch):
 class CS(InnerProdSketcher):
     def __init__(self, sketch_size: int, seed: int, prime: int = 2147483587, t: int=1, k_wise: int=4) -> None:
         self.sketch_size: int = sketch_size
-        print("self.sketch_size", self.sketch_size)
+        # print("self.sketch_size", self.sketch_size)
         self.seed: int = seed
         self.prime: int = prime
-        print("self.prime", self.prime)
+        # print("self.prime", self.prime)
         self.t: int = t # determines the number of hash functions
-        print("self.t", self.t)
+        # print("self.t", self.t)
         self.k_wise: int = k_wise # the k-wise independence of the hash function
 
     def sketch(self, vector: np.ndarray) -> CSSketch:

@@ -95,6 +95,8 @@ if __name__ == "__main__":
 		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_uniform', 'ts_corr', 'ps_uniform', 'ps_corr']
 	elif mode=='time':
 		sketch_methods = ['jl', 'cs', 'mh', 'dmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
+	else:
+		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
 	sketch_methods = '+'.join(sketch_methods)
 
 	if plot_only:
@@ -178,3 +180,29 @@ if __name__ == "__main__":
 		command_experiment_ip(outlier_pct, outlier_max, mode, sketch_methods, corr, t, start_size, end_size, interval_size, iteration, overlap, log_time, log_name)
 		# plot
 		commoand_plot(sketch_methods, log_name)
+	elif mode=='twitter':
+		command = 'time python \
+			'+script_path+'/experiment_twitter.py \
+			> '+project_path+'/debug_log/run_mode_'+mode
+		print("🚀🚀🚀 running: twitter experiment")
+		os.system(command)
+	elif mode=='tpch':
+		command = 'time python \
+			'+script_path+'/experiment_tpch.py \
+			> '+project_path+'/debug_log/run_mode_'+mode
+		print("🚀🚀🚀 running: tpch experiment")
+		os.system(command)
+	elif mode=='20news':
+		command = 'time python \
+			'+script_path+'/experiment_20news.py \
+			> '+project_path+'/debug_log/run_mode_'+mode
+		print("🚀🚀🚀 running: 20news experiment")
+		os.system(command)
+	elif mode=='wbf':
+		for mode in ['corr', 'join_size', 'ip']:
+			command = 'time python \
+				'+script_path+'/experiment_wbf.py \
+				-mode='+mode+' \
+				> '+project_path+'/debug_log/run_mode_wbf_'+mode
+			print("🚀🚀🚀 running: wbf experiment", mode)
+			os.system(command)
