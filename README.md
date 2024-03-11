@@ -109,11 +109,5 @@ To generate Figure 4, run:
 ```bash
 pyhon experiment_plot.py --paper_fig 4
 ```
-And so on, except for the World Bank Experiemnts (Figure 8 and Table 2). Because the figure is in a different format and the table is easier to show in a jupyter notebook. To generate these, run:
-```bash
-WorldBankExperiment_Figure8_Table2.ipynb
-```
-#### 🔥 The generated figures will be saved in the folder `fig/`
-
-## 🚀 Running your own experiments
+And so on.
 
