@@ -47,18 +47,18 @@ if __name__ == "__main__":
 		sketch_methods = ['jl', 'cs', 'mh', 'wmh', 'ts_uniform', 'ts_2norm', 'ps_uniform', 'ps_2norm']
 	elif paper_fig == 4:
 		data_files = [
-			"existing_log/mode_join_size+overlap_0.01+outlier_0.02+max_10+corr_0.7+20231213002433",
-			"existing_log/mode_join_size+overlap_0.1+outlier_0.02+max_10+corr_0.7+20231213002929",
-			"existing_log/mode_join_size+overlap_0.5+outlier_0.02+max_10+corr_0.7+20231213003131",
-			"existing_log/mode_join_size+overlap_1.0+outlier_0.02+max_10+corr_0.7+20231213003331"
+			"existing_log/mode_join_size+overlap_0.01+outlier_0.02+max_10+corr_0.7+synthetic",
+			"existing_log/mode_join_size+overlap_0.1+outlier_0.02+max_10+corr_0.7+synthetic",
+			"existing_log/mode_join_size+overlap_0.5+outlier_0.02+max_10+corr_0.7+synthetic",
+			"existing_log/mode_join_size+overlap_1.0+outlier_0.02+max_10+corr_0.7+synthetic"
 		]
 		sketch_methods = ['jl', 'cs', 'mh', 'ts_uniform', 'ps_uniform']
 	elif paper_fig == 5:
 		data_files = [
-			"existing_log/mode_ip+overlap_0.01+outlier_0.1+max_10+corr_0.7+20230825150130",
-			"existing_log/mode_ip+overlap_0.1+outlier_0.1+max_10+corr_0.7+20230825150240",
-			"existing_log/mode_ip+overlap_0.5+outlier_0.1+max_10+corr_0.7+20230825150410",
-			"existing_log/mode_ip+overlap_1.0+outlier_0.1+max_10+corr_0.7+20230825150531"
+			"existing_log/mode_ip+overlap_0.01+outlier_0.1+max_10+corr_0.7+fig5",
+			"existing_log/mode_ip+overlap_0.1+outlier_0.1+max_10+corr_0.7+fig5",
+			"existing_log/mode_ip+overlap_0.5+outlier_0.1+max_10+corr_0.7+fig5",
+			"existing_log/mode_ip+overlap_1.0+outlier_0.1+max_10+corr_0.7+fig5"
 		]
 		sketch_methods = ['ts_1norm', 'ts_2norm', 'ps_1norm', 'ps_2norm']
 	elif paper_fig == 6:
