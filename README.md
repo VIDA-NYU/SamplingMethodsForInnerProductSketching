@@ -99,7 +99,7 @@ source .bashrc
     - 8 hour
 
 ## 🚀 4. Reproducing the plots directly from saved data
-To reproduce the experiments results, you can run the following command.
+To reproduce the plots in the paper from the experimental data produced by the above commands, you can run the following command.
 
 #### 🔥 use the command line to run the script with the appropriate figure number. For example, to generate Figure 3, run:
 ```bash
