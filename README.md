@@ -13,8 +13,8 @@ This README file is divided into the following sections:
 
 * [1. Requirements](#🚀-1-requirements)
 * [2. Setup before reproducing the plots](#🚀-2-setup-before-reproducing-the-plots)
-* [3. Reproducing the plots by running experiments](#🚀-3-reproducing-the-plots-by-running-experiments)
-* [4. Reproducing the plots directly from saved data](#🚀-4-reproducing-the-plots-directly-from-saved-data)
+* [3. Reproducing the experimental results](#🚀-3-reproducing-the-plots-by-running-experiments)
+* [4. Plotting the results](#🚀-4-reproducing-the-plots-directly-from-saved-data)
 
 ## 🚀 1. Requirements
 These experiments were run using `Python 3.9.9` with these required package. They are also listed in the `requirements.txt` file.
@@ -34,7 +34,7 @@ These experiments were run using `Python 3.9.9` with these required package. The
 source .bashrc
 ```
 
-## 🚀 3. Reproducing the plots by running experiments
+## 🚀 3. Reproducing the experimental results
 
 ### 🔥 3.1 make sure you have done the [Setup](#🚀-setup-before-reproducing-the-plots)
 
@@ -98,7 +98,7 @@ source .bashrc
   - Expected time: 
     - 8 hour
 
-## 🚀 4. Reproducing the plots directly from saved data
+## 🚀 4. Plotting the results
 To reproduce the plots in the paper from the experimental data produced by the above commands, you can run the following command.
 
 #### 🔥 use the command line to run the script with the appropriate figure number. For example, to generate Figure 3, run:
