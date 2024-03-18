@@ -5,3 +5,6 @@ debug_log/run_*
 __pycache__/
 .DS_Store
 .envrc
+/fig/
+/log/
+/venv/
