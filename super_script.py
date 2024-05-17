@@ -140,8 +140,8 @@ if __name__ == "__main__":
 					# run experiment
 					# command_experiment_ip(outlier_pct, outlier_max, mode, sketch_methods, corr, t, start_size, end_size, interval_size, iteration, overlap, log_time, log_name)
 					# plot
-					# commoand_plot(sketch_methods, log_name)
-					commoand_plot(sketch_methods, project_path+'/existing_log/mode_ip+overlap_'+str(overlap)+'+outlier_0.1+max_10+corr_0.7+fig5','fig5+overlap_'+str(overlap))
+					commoand_plot(sketch_methods, log_name)
+					# commoand_plot(sketch_methods, project_path+'/existing_log/mode_ip+overlap_'+str(overlap)+'+outlier_0.1+max_10+corr_0.7+fig5','fig5+overlap_'+str(overlap))
 	elif mode == 'corr':
 		overlap = 0.1
 		start_size = 200
