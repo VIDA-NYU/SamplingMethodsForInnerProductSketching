@@ -138,7 +138,7 @@ if __name__ == "__main__":
 					log_file_name = '+'.join(['mode_'+mode, 'overlap_'+str(overlap), 'outlier_'+str(outlier_pct), 'max_'+str(outlier_max), 'corr_'+str(corr), log_time])
 					log_name = project_path+'/log/'+log_file_name
 					# run experiment
-					# command_experiment_ip(outlier_pct, outlier_max, mode, sketch_methods, corr, t, start_size, end_size, interval_size, iteration, overlap, log_time, log_name)
+					command_experiment_ip(outlier_pct, outlier_max, mode, sketch_methods, corr, t, start_size, end_size, interval_size, iteration, overlap, log_time, log_name)
 					# plot
 					commoand_plot(sketch_methods, log_name)
 					# commoand_plot(sketch_methods, project_path+'/existing_log/mode_ip+overlap_'+str(overlap)+'+outlier_0.1+max_10+corr_0.7+fig5','fig5+overlap_'+str(overlap))
