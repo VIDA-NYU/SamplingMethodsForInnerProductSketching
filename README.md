@@ -1,11 +1,14 @@
-# Sampling Based Methods for Inner Product Sketching
+# Sampling Methods for Inner Product Sketching
 
-This is the code for the paper "Sampling Based Methods for Inner Product Sketching" submitted to VLDB 2024.
-The extended version of the paper is available at: 
+This is the code for the paper [Sampling Methods for Inner Product Sketching](https://www.vldb.org/pvldb/vol17/p2185-musco.pdf) published at VLDB 2024.
+We suggest users read the paper to better understand the experiments before using the code.
 
-- https://arxiv.org/abs/2309.16157
+The extended version of the paper (with appendices) is available at: https://arxiv.org/abs/2309.16157
 
-We suggest users read the paper for a better understanding of the experiments before using the code.
+For citations, please use:
+> Majid Daliri, Juliana Freire, Christopher Musco, Aécio Santos,
+and Haoxiang Zhang. Sampling Methods for Inner Product Sketching.
+PVLDB, 17(9): 2185 - 2197, 2024. doi:10.14778/3665844.3665850
 
 ## Contents
 
